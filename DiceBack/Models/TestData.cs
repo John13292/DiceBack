@@ -37,7 +37,7 @@ namespace DiceBack.Data
                     new Effects
                     {
                         Name = "Больше золота за победу",
-                        IsNegative = true
+                        IsPositive = true
                     }
                 );
 

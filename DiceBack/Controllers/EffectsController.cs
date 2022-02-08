@@ -23,7 +23,7 @@ namespace DiceBack.Controllers
         }
 
         // GET: api/Effects
-        [HttpGet]
+        [HttpGet("GetEffects")]
         public async Task<ActionResult<IEnumerable<Effects>>> GetEffects()
         {
             return await _context.Effects.ToListAsync();
@@ -41,6 +41,26 @@ namespace DiceBack.Controllers
             }
 
             return effects;
+        }
+
+        [HttpGet("GetPositiveEffects")]
+        [ActionName("GetPositiveEffects")]
+        public async Task<ActionResult<IEnumerable<EffectsVue>>> GetPositiveEffects()
+        {
+            return await _context.Effects
+                .Where(a => a.IsPositive)
+                .Select(a => new EffectsVue { Name = a.Name })
+                .ToListAsync();
+        }
+
+        [HttpGet("GetNegativeEffects")]
+        [ActionName("GetNegativeEffects")]
+        public async Task<ActionResult<IEnumerable<EffectsVue>>> GetNegativeEffects()
+        {
+            return await _context.Effects
+                .Where(a => a.IsNegative)
+                .Select(a => new EffectsVue { Name = a.Name })
+                .ToListAsync();
         }
 
         // PUT: api/Effects/5
