@@ -49,7 +49,10 @@ namespace DiceBack.Controllers
         {
             return await _context.Effects
                 .Where(a => a.IsPositive)
-                .Select(a => new EffectsVue { Name = a.Name })
+                .Select(a => new EffectsVue {
+                    Id = a.Id,
+                    Name = a.Name
+                })
                 .ToListAsync();
         }
 
@@ -59,7 +62,10 @@ namespace DiceBack.Controllers
         {
             return await _context.Effects
                 .Where(a => a.IsNegative)
-                .Select(a => new EffectsVue { Name = a.Name })
+                .Select(a => new EffectsVue{
+                    Id = a.Id,
+                    Name = a.Name
+                })
                 .ToListAsync();
         }
 
