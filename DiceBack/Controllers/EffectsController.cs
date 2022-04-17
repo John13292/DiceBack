@@ -72,14 +72,20 @@ namespace DiceBack.Controllers
         // PUT: api/Effects/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutEffects(int id, Effects effects)
+        public async Task<IActionResult> PutEffects(int id, EffectsVue effects)
         {
-            if (id != effects.Id)
+            if (!EffectsExists(id))
             {
                 return BadRequest();
             }
 
-            _context.Entry(effects).State = EntityState.Modified;
+            var effectContext = _context.Effects.FirstOrDefault(x => x.Id == id);
+
+            effectContext.Id = id;
+            effectContext.Name = effects.Name;
+            effectContext.IsPositive = effects.IsPositive;
+            effectContext.IsNegative = effects.IsNegative;
+            effectContext.UpdateStamp = DateTime.UtcNow;
 
             try
             {
@@ -103,9 +109,14 @@ namespace DiceBack.Controllers
         // POST: api/Effects
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Effects>> PostEffects(Effects effects)
+        public async Task<ActionResult<Effects>> PostEffects(EffectsVue effects)
         {
-            _context.Effects.Add(effects);
+            _context.Effects.Add(new Effects { 
+                Name = effects.Name,
+                IsPositive = effects.IsPositive,
+                IsNegative = effects.IsNegative,
+                InsertStamp = DateTime.UtcNow
+            });
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetEffects", new { id = effects.Id }, effects);
