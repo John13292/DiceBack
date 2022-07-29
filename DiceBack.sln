@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DiceBack.Application", "Dic
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DiceBack.Contracts", "DiceBack.Contracts\DiceBack.Contracts.csproj", "{E042B203-48AD-4B60-8F3E-0D2454E91A2A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiceBack.DataBase", "DiceBack.DataBase\DiceBack.DataBase.csproj", "{B9EB596C-7F57-4F90-A461-3CD322F24CFC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DiceBack.DataBase", "DiceBack.DataBase\DiceBack.DataBase.csproj", "{B9EB596C-7F57-4F90-A461-3CD322F24CFC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiceBack.Entities", "DiceBack.Entities\DiceBack.Entities.csproj", "{B10AA55A-D05A-4154-8E30-01EBF23E8EBC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{B9EB596C-7F57-4F90-A461-3CD322F24CFC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B9EB596C-7F57-4F90-A461-3CD322F24CFC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B9EB596C-7F57-4F90-A461-3CD322F24CFC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B10AA55A-D05A-4154-8E30-01EBF23E8EBC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B10AA55A-D05A-4154-8E30-01EBF23E8EBC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B10AA55A-D05A-4154-8E30-01EBF23E8EBC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B10AA55A-D05A-4154-8E30-01EBF23E8EBC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

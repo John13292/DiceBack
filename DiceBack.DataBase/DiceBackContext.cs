@@ -11,5 +11,6 @@ namespace DiceBack.DataBase
         }
 
         public DbSet<ImageDto> Images { get; set; }
+        public DbSet<EffectDto> Effects { get; set; }
     }
 }

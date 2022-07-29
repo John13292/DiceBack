@@ -1,13 +1,11 @@
 ﻿#nullable disable
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using DiceBack.Data;
 using DiceBack.Models;
+using DiceBack.Contracts.Models;
+using DiceBack.Application.Effects.Querry;
+using DiceBack.Application.Effects.Command;
 
 namespace DiceBack.Controllers
 {
@@ -15,132 +13,62 @@ namespace DiceBack.Controllers
     [ApiController]
     public class EffectsController : ControllerBase
     {
-        private readonly DiceBackContextOld _context;
+        private readonly IEffectQuerry _effectQuerry;
+        private readonly IEffectCommand _effectCommand;
 
-        public EffectsController(DiceBackContextOld context)
+        public EffectsController(IEffectQuerry effectQuerry, IEffectCommand effectCommand)
         {
-            _context = context;
+            _effectQuerry = effectQuerry;
+            _effectCommand = effectCommand;
         }
 
         // GET: api/Effects
         [HttpGet("GetEffects")]
-        public async Task<ActionResult<IEnumerable<Effects>>> GetEffects()
+        public async Task<IEnumerable<EffectDto>> GetEffects()
         {
-            return await _context.Effects.ToListAsync();
+            return await _effectQuerry.GetEffects();
         }
 
         // GET: api/Effects/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Effects>> GetEffects(int id)
+        public async Task<EffectDto> GetEffects(int id)
         {
-            var effects = await _context.Effects.FindAsync(id);
-
-            if (effects == null)
-            {
-                return NotFound();
-            }
-
-            return effects;
+            return await _effectQuerry.GetEffectById(id);
         }
 
         [HttpGet("GetPositiveEffects")]
         [ActionName("GetPositiveEffects")]
-        public async Task<ActionResult<IEnumerable<EffectsVue>>> GetPositiveEffects()
+        public async Task<IEnumerable<EffectDto>> GetPositiveEffects()
         {
-            return await _context.Effects
-                .Where(a => a.IsPositive)
-                .Select(a => new EffectsVue {
-                    Id = a.Id,
-                    Name = a.Name
-                })
-                .ToListAsync();
+            return await _effectQuerry.GetPositiveEffects();
         }
 
         [HttpGet("GetNegativeEffects")]
         [ActionName("GetNegativeEffects")]
-        public async Task<ActionResult<IEnumerable<EffectsVue>>> GetNegativeEffects()
+        public async Task<IEnumerable<EffectDto>> GetNegativeEffects()
         {
-            return await _context.Effects
-                .Where(a => a.IsNegative)
-                .Select(a => new EffectsVue{
-                    Id = a.Id,
-                    Name = a.Name
-                })
-                .ToListAsync();
+            return await _effectQuerry.GetNegativeEffects();
+        }
+
+        [HttpPost(nameof(AddEffect))]
+        public async Task AddEffect([FromQuery] EffectDto effectDto)
+        {
+            await _effectCommand.AddEffect(effectDto);
         }
 
         // PUT: api/Effects/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutEffects(int id, EffectsVue effects)
+        [HttpPut("UpdateEffect")]
+        public async Task UpdateEffect(EffectDto effectDto)
         {
-            if (!EffectsExists(id))
-            {
-                return BadRequest();
-            }
-
-            var effectContext = _context.Effects.FirstOrDefault(x => x.Id == id);
-
-            effectContext.Id = id;
-            effectContext.Name = effects.Name;
-            effectContext.IsPositive = effects.IsPositive;
-            effectContext.IsNegative = effects.IsNegative;
-            effectContext.UpdateStamp = DateTime.UtcNow;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!EffectsExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
-        // POST: api/Effects
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<Effects>> PostEffects(EffectsVue effects)
-        {
-            _context.Effects.Add(new Effects { 
-                Name = effects.Name,
-                IsPositive = effects.IsPositive,
-                IsNegative = effects.IsNegative,
-                InsertStamp = DateTime.UtcNow
-            });
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetEffects", new { id = effects.Id }, effects);
+            await _effectCommand.PutEffect(effectDto);
         }
 
         // DELETE: api/Effects/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteEffects(int id)
+        [HttpDelete("DeleteEffect")]
+        public async Task DeleteEffect(int id)
         {
-            var effects = await _context.Effects.FindAsync(id);
-            if (effects == null)
-            {
-                return NotFound();
-            }
-
-            _context.Effects.Remove(effects);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
-        }
-
-        private bool EffectsExists(int id)
-        {
-            return _context.Effects.Any(e => e.Id == id);
+            await _effectCommand.DeleteEffect(id);
         }
     }
 }

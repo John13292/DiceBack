@@ -1,8 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using DiceBack.Data;
 using DiceBack.DataBase;
-using DiceBack.Application.Images;
+using DiceBack.Application.Extensions;
+using DiceBack.Application.Mapping;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,7 +17,13 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddTransient<IImage, Image>();
+builder.Services.AddImageIntegration();
+builder.Services.AddEffectIntegration();
+builder.Services.AddAutoMapper(
+    confug => { confug.AllowNullCollections = true; },
+    typeof(EffectDtoMappingEffect)
+    );
+
 
 builder.Services.AddCors(optioins =>
     {
