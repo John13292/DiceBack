@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DiceBack.Migrations
 {
-    [DbContext(typeof(DiceBackContext))]
+    [DbContext(typeof(DiceBackContextOld))]
     [Migration("20220118130315_Init")]
     partial class Init
     {

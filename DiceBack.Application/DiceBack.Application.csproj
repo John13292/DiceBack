@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DiceBack.Contracts\DiceBack.Contracts.csproj" />
+    <ProjectReference Include="..\DiceBack.DataBase\DiceBack.DataBase.csproj" />
+  </ItemGroup>
+
+</Project>

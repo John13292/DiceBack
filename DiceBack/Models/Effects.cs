@@ -1,6 +1,4 @@
-﻿using System.ComponentModel;
-
-namespace DiceBack.Models
+﻿namespace DiceBack.Models
 {
     public class Effects
     {

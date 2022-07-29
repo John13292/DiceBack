@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DiceBack.Migrations
 {
-    [DbContext(typeof(DiceBackContext))]
+    [DbContext(typeof(DiceBackContextOld))]
     partial class DiceBackContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

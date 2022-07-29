@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DiceBack.Migrations
 {
-    [DbContext(typeof(DiceBackContext))]
+    [DbContext(typeof(DiceBackContextOld))]
     [Migration("20220217064908_AddImageModel")]
     partial class AddImageModel
     {

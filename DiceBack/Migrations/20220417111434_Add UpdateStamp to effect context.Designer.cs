@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DiceBack.Migrations
 {
-    [DbContext(typeof(DiceBackContext))]
+    [DbContext(typeof(DiceBackContextOld))]
     [Migration("20220417111434_Add UpdateStamp to effect context")]
     partial class AddUpdateStamptoeffectcontext
     {

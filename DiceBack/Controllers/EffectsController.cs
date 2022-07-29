@@ -15,9 +15,9 @@ namespace DiceBack.Controllers
     [ApiController]
     public class EffectsController : ControllerBase
     {
-        private readonly DiceBackContext _context;
+        private readonly DiceBackContextOld _context;
 
-        public EffectsController(DiceBackContext context)
+        public EffectsController(DiceBackContextOld context)
         {
             _context = context;
         }

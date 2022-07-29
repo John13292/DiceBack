@@ -1,6 +1,6 @@
-﻿namespace DiceBack
+﻿namespace DiceBack.Contracts.Models
 {
-    public class Images
+    public class ImageDto
     {
         public Guid Id { get; set; }
         public string Name { get; set; }

@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using DiceBack.Data;
+using DiceBack.DataBase;
+using DiceBack.Application.Images;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +18,7 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddTransient<IImage, Image>();
 
 builder.Services.AddCors(optioins =>
     {
@@ -35,7 +38,7 @@ using (var scope = app.Services.CreateScope())
 {
     var service = scope.ServiceProvider;
 
-    TestData.Initialize(service);
+    //TestData.Initialize(service);
 }
 
 // Configure the HTTP request pipeline.
