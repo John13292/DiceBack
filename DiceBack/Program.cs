@@ -21,7 +21,8 @@ builder.Services.AddImageIntegration();
 builder.Services.AddEffectIntegration();
 builder.Services.AddAutoMapper(
     confug => { confug.AllowNullCollections = true; },
-    typeof(EffectDtoMappingEffect)
+    typeof(EffectDtoMappingEffect),
+    typeof(ImageDtoMappingImage)
     );
 
 

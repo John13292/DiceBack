@@ -1,8 +1,5 @@
 ﻿#nullable disable
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using DiceBack.Data;
-using DiceBack.Models;
 using DiceBack.Contracts.Models;
 using DiceBack.Application.Effects.Querry;
 using DiceBack.Application.Effects.Command;

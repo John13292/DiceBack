@@ -1,4 +1,6 @@
-﻿using DiceBack.Contracts.Models;
+﻿#nullable disable
+using DiceBack.Contracts.Models;
+using DiceBack.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace DiceBack.DataBase
@@ -10,7 +12,7 @@ namespace DiceBack.DataBase
         {
         }
 
-        public DbSet<ImageDto> Images { get; set; }
-        public DbSet<EffectDto> Effects { get; set; }
+        public DbSet<Image> Images { get; set; }
+        public DbSet<Effect> Effects { get; set; }
     }
 }

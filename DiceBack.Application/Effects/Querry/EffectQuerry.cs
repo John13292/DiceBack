@@ -1,4 +1,5 @@
-﻿using DiceBack.Contracts.Models;
+﻿using AutoMapper;
+using DiceBack.Contracts.Models;
 using DiceBack.DataBase;
 using Microsoft.EntityFrameworkCore;
 
@@ -7,10 +8,12 @@ namespace DiceBack.Application.Effects.Querry;
 internal class EffectQuerry : IEffectQuerry
 {
     private readonly DiceBackContext _context;
+    private readonly IMapper _mapper;
 
-    public EffectQuerry(DiceBackContext context)
+    public EffectQuerry(DiceBackContext context, IMapper mapper)
     {
         _context = context;
+        _mapper = mapper;
     }
 
     public async Task<EffectDto?> GetEffectById(int id)
@@ -20,12 +23,16 @@ internal class EffectQuerry : IEffectQuerry
             .Effects
             .FindAsync(id);
 
-        return effect;
+        return _mapper.Map<EffectDto>(effect);
     }
 
     public async Task<IEnumerable<EffectDto>> GetEffects()
     {
-        return await _context.Effects.ToListAsync();
+        return 
+            await _context
+                .Effects
+                .Select(x => _mapper.Map<EffectDto>(x))
+                .ToListAsync();
     }
 
     public async Task<IEnumerable<EffectDto>> GetNegativeEffects()
@@ -34,6 +41,7 @@ internal class EffectQuerry : IEffectQuerry
             await _context
             .Effects
             .Where(x => x.IsNegative)
+            .Select(x => _mapper.Map<EffectDto>(x))
             .ToListAsync();
 
         return effects;
@@ -45,6 +53,7 @@ internal class EffectQuerry : IEffectQuerry
             await _context
             .Effects
             .Where(x => x.IsPositive)
+            .Select(x => _mapper.Map<EffectDto>(x))
             .ToListAsync();
 
         return effects;

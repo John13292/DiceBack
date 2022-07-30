@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using DiceBack.Contracts.Models;
 using DiceBack.DataBase;
+using DiceBack.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace DiceBack.Application.Effects.Command
@@ -20,7 +21,9 @@ namespace DiceBack.Application.Effects.Command
         {
             effectDto.InsertStamp = DateTime.UtcNow;
 
-            await _context.Effects.AddAsync(effectDto);
+            var effect = _mapper.Map<Effect>(effectDto);
+
+            await _context.Effects.AddAsync(effect);
             
             await _context.SaveChangesAsync();
         }
@@ -58,7 +61,7 @@ namespace DiceBack.Application.Effects.Command
                     return;
                 }
 
-                effect = _mapper.Map<EffectDto>(effectDto);
+                effect = _mapper.Map<Effect>(effectDto);
 
                 effect.UpdateStamp = DateTime.UtcNow;
 
