@@ -17,14 +17,16 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddImageIntegration();
-builder.Services.AddEffectIntegration();
 builder.Services.AddAutoMapper(
     confug => { confug.AllowNullCollections = true; },
     typeof(EffectDtoMappingEffect),
     typeof(ImageDtoMappingImage)
     );
 
+
+builder.Services.AddImageIntegration();
+builder.Services.AddEffectIntegration();
+builder.Services.AddEffectGeneratorIntegration();
 
 builder.Services.AddCors(optioins =>
     {

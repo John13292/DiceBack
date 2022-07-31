@@ -1,5 +1,6 @@
 ﻿using DiceBack.Application.Effects.Command;
 using DiceBack.Application.Effects.Querry;
+using DiceBack.Application.Effects.Querry.EffectGenerator;
 using DiceBack.Application.Images;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -17,6 +18,11 @@ namespace DiceBack.Application.Extensions
         {
             services.AddTransient<IEffectQuerry, EffectQuerry>();
             services.AddTransient<IEffectCommand, EffectCommand>();
+            return services;
+        }
+        public static IServiceCollection AddEffectGeneratorIntegration(this IServiceCollection services)
+        {
+            services.AddTransient<IEffectGenerator, EffectGenerator>();
             return services;
         }
     }

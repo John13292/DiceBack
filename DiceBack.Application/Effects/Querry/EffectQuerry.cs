@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using DiceBack.Contracts.Enums;
 using DiceBack.Contracts.Models;
 using DiceBack.DataBase;
 using Microsoft.EntityFrameworkCore;
@@ -40,7 +41,7 @@ internal class EffectQuerry : IEffectQuerry
         var effects = 
             await _context
             .Effects
-            .Where(x => x.IsNegative)
+            .Where(x => x.EffectType == EffectType.Negative)
             .Select(x => _mapper.Map<EffectDto>(x))
             .ToListAsync();
 
@@ -52,7 +53,7 @@ internal class EffectQuerry : IEffectQuerry
         var effects =
             await _context
             .Effects
-            .Where(x => x.IsPositive)
+            .Where(x => x.EffectType == EffectType.Positive)
             .Select(x => _mapper.Map<EffectDto>(x))
             .ToListAsync();
 

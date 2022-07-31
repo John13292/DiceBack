@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using DiceBack.Contracts.Models;
 using DiceBack.Application.Effects.Querry;
 using DiceBack.Application.Effects.Command;
+using DiceBack.Application.Effects.Querry.EffectGenerator;
 
 namespace DiceBack.Controllers
 {
@@ -12,11 +13,13 @@ namespace DiceBack.Controllers
     {
         private readonly IEffectQuerry _effectQuerry;
         private readonly IEffectCommand _effectCommand;
+        private readonly IEffectGenerator _effectGenerator;
 
-        public EffectsController(IEffectQuerry effectQuerry, IEffectCommand effectCommand)
+        public EffectsController(IEffectQuerry effectQuerry, IEffectCommand effectCommand, IEffectGenerator effectGenerator)
         {
             _effectQuerry = effectQuerry;
             _effectCommand = effectCommand;
+            _effectGenerator = effectGenerator;
         }
 
         // GET: api/Effects
@@ -66,6 +69,12 @@ namespace DiceBack.Controllers
         public async Task DeleteEffect(int id)
         {
             await _effectCommand.DeleteEffect(id);
+        }
+
+        [HttpGet(nameof(GenerateEffects))]
+        public async Task<IEnumerable<EffectDto>> GenerateEffects()
+        {
+            return await _effectGenerator.GenerateEffects();
         }
     }
 }

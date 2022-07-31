@@ -1,5 +1,4 @@
 ﻿#nullable disable
-using DiceBack.Contracts.Models;
 using DiceBack.Entities;
 using Microsoft.EntityFrameworkCore;
 
