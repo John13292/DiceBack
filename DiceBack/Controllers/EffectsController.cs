@@ -31,9 +31,17 @@ namespace DiceBack.Controllers
 
         // GET: api/Effects/5
         [HttpGet("{id}")]
-        public async Task<EffectDto> GetEffects(int id)
+        public async Task<ActionResult<EffectDto>> GetEffects(int id)
         {
-            return await _effectQuerry.GetEffectById(id);
+            
+            var effect = await _effectQuerry.GetEffectById(id);
+
+            if (effect is null)
+            {
+                return BadRequest();
+            }
+
+            return effect;
         }
 
         [HttpGet("GetPositiveEffects")]

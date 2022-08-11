@@ -54,16 +54,11 @@ namespace DiceBack.Application.Effects.Command
         {
             try
             {
-                var effect = await _context.Effects.FindAsync(effectDto.Id);
-
-                if (effect is null)
-                {
-                    return;
-                }
-
-                effect = _mapper.Map<Effect>(effectDto);
+                var effect = _mapper.Map<Effect>(effectDto);
 
                 effect.UpdateStamp = DateTime.UtcNow;
+
+                _context.Entry(effect).State = EntityState.Modified;
 
                 await _context.SaveChangesAsync();
 
