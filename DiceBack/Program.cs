@@ -1,17 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
-using DiceBack.DataBase;
-using DiceBack.Application.Extensions;
+﻿using DiceBack.Application.Extensions;
 using DiceBack.Api.System.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddDbContext<DiceBackContext>(options =>
-    options.UseSqlServer(
-        builder.Configuration.GetConnectionString("DiceBackContext")
-    )
-);
-
 //add system
+builder.Services.DbContextConfiguraion(builder.Configuration);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -22,8 +15,6 @@ builder.Services.CorsConfiguration();
 builder.Services.AddImageIntegration();
 builder.Services.AddEffectIntegration();
 builder.Services.AddEffectGeneratorIntegration();
-
-
 
 var app = builder.Build();
 
