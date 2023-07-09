@@ -1,9 +1,8 @@
-﻿namespace DiceBack.Contracts.Enums
+﻿namespace DiceBack.Contracts.Enums;
+
+public enum EffectType
 {
-    public enum EffectType
-    {
-        Negative,
-        Positive,
-        Neutral
-    }
+    Negative,
+    Positive,
+    Neutral
 }

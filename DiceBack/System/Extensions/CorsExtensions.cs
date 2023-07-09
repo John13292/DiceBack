@@ -1,10 +1,10 @@
-﻿namespace DiceBack.Api.System.Extensions
+﻿namespace DiceBack.Api.System.Extensions;
+
+public static class CorsExtensions
 {
-    public static class CorsExtensions
+    public static IServiceCollection CorsConfiguration(this IServiceCollection service)
     {
-        public static IServiceCollection CorsConfiguration(this IServiceCollection service)
-        {
-            service.AddCors(optioins =>
+        service.AddCors(optioins =>
             {
                 optioins.AddPolicy("FrontConnection", builder =>
                 {
@@ -14,9 +14,8 @@
                         .AllowAnyMethod();
                 });
             }
-            );
+        );
 
-            return service;
-        }
+        return service;
     }
 }

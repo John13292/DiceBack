@@ -2,23 +2,22 @@
 using DiceBack.Contracts.Models;
 using Microsoft.AspNetCore.Mvc;
 
-namespace DiceBack.Controllers
+namespace DiceBack.Api.Controllers;
+
+[Route("api/[controller]")]
+[ApiController]
+public class ImagesController : ControllerBase
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class ImagesController : ControllerBase
+    private readonly IImage _image;
+
+    public ImagesController(IImage image)
     {
-        private readonly IImage _image;
+        _image = image;
+    }
 
-        public ImagesController(IImage image)
-        {
-            _image = image;
-        }
-
-        [HttpGet]
-        public async Task<IEnumerable<ImageDto>> GetImagesList()
-        {
-            return await _image.GetImagesList();
-        }
+    [HttpGet]
+    public async Task<IEnumerable<ImageDto>> GetImagesList()
+    {
+        return await _image.GetImagesList();
     }
 }

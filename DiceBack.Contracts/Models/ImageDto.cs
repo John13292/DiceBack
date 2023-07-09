@@ -1,10 +1,9 @@
-﻿namespace DiceBack.Contracts.Models
+﻿namespace DiceBack.Contracts.Models;
+
+public class ImageDto
 {
-    public class ImageDto
-    {
-        public Guid Id { get; set; }
-        public string Name { get; set; }
-        public string Url { get; set; }
-        public DateTime InsertStamp { get; set; }
-    }
+    public Guid Id { get; set; }
+    public string Name { get; set; }
+    public string Url { get; set; }
+    public DateTime InsertStamp { get; set; }
 }

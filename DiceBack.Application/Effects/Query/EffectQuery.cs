@@ -4,14 +4,14 @@ using DiceBack.Contracts.Models;
 using DiceBack.DataBase;
 using Microsoft.EntityFrameworkCore;
 
-namespace DiceBack.Application.Effects.Querry;
+namespace DiceBack.Application.Effects.Query;
 
-internal class EffectQuerry : IEffectQuerry
+internal class EffectQuery : IEffectQuery
 {
     private readonly DiceBackContext _context;
     private readonly IMapper _mapper;
 
-    public EffectQuerry(DiceBackContext context, IMapper mapper)
+    public EffectQuery(DiceBackContext context, IMapper mapper)
     {
         _context = context;
         _mapper = mapper;

@@ -4,7 +4,7 @@ using DiceBack.Api.System.Extensions;
 var builder = WebApplication.CreateBuilder(args);
 
 //add system
-builder.Services.DbContextConfiguraion(builder.Configuration);
+builder.Services.DbContextConfiguration(builder.Configuration);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

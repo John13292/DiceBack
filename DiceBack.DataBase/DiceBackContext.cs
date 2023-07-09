@@ -2,16 +2,15 @@
 using DiceBack.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace DiceBack.DataBase
-{
-    public class DiceBackContext : DbContext
-    {
-        public DiceBackContext(DbContextOptions<DiceBackContext> options)
-            : base(options)
-        {
-        }
+namespace DiceBack.DataBase;
 
-        public DbSet<Image> Images { get; set; }
-        public DbSet<Effect> Effects { get; set; }
+public class DiceBackContext : DbContext
+{
+    public DiceBackContext(DbContextOptions<DiceBackContext> options)
+        : base(options)
+    {
     }
+
+    public DbSet<Image> Images { get; set; }
+    public DbSet<Effect> Effects { get; set; }
 }
