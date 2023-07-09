@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="11.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DiceBack.Contracts\DiceBack.Contracts.csproj" />
+    <ProjectReference Include="..\DiceBack.DataBase\DiceBack.DataBase.csproj" />
+    <ProjectReference Include="..\DiceBack.Entities\DiceBack.Entities.csproj" />
+  </ItemGroup>
+
+</Project>

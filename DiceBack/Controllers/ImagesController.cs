@@ -1,7 +1,6 @@
-﻿using DiceBack.Data;
-using Microsoft.AspNetCore.Http;
+﻿using DiceBack.Application.Images;
+using DiceBack.Contracts.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace DiceBack.Controllers
 {
@@ -9,17 +8,17 @@ namespace DiceBack.Controllers
     [ApiController]
     public class ImagesController : ControllerBase
     {
-        private readonly DiceBackContext _context;
+        private readonly IImage _image;
 
-        public ImagesController(DiceBackContext context)
+        public ImagesController(IImage image)
         {
-            _context = context;
+            _image = image;
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Images>>> Get()
+        public async Task<IEnumerable<ImageDto>> GetImagesList()
         {
-            return await _context.Images.ToListAsync();
+            return await _image.GetImagesList();
         }
     }
 }

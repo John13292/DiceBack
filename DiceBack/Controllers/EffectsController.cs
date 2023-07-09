@@ -1,13 +1,9 @@
 ﻿#nullable disable
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using DiceBack.Data;
-using DiceBack.Models;
+using DiceBack.Contracts.Models;
+using DiceBack.Application.Effects.Querry;
+using DiceBack.Application.Effects.Command;
+using DiceBack.Application.Effects.Querry.EffectGenerator;
 
 namespace DiceBack.Controllers
 {
@@ -15,121 +11,78 @@ namespace DiceBack.Controllers
     [ApiController]
     public class EffectsController : ControllerBase
     {
-        private readonly DiceBackContext _context;
+        private readonly IEffectQuerry _effectQuerry;
+        private readonly IEffectCommand _effectCommand;
+        private readonly IEffectGenerator _effectGenerator;
 
-        public EffectsController(DiceBackContext context)
+        public EffectsController(IEffectQuerry effectQuerry, IEffectCommand effectCommand, IEffectGenerator effectGenerator)
         {
-            _context = context;
+            _effectQuerry = effectQuerry;
+            _effectCommand = effectCommand;
+            _effectGenerator = effectGenerator;
         }
 
         // GET: api/Effects
         [HttpGet("GetEffects")]
-        public async Task<ActionResult<IEnumerable<Effects>>> GetEffects()
+        public async Task<IEnumerable<EffectDto>> GetEffects()
         {
-            return await _context.Effects.ToListAsync();
+            return await _effectQuerry.GetEffects();
         }
 
         // GET: api/Effects/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Effects>> GetEffects(int id)
+        public async Task<ActionResult<EffectDto>> GetEffects(int id)
         {
-            var effects = await _context.Effects.FindAsync(id);
+            
+            var effect = await _effectQuerry.GetEffectById(id);
 
-            if (effects == null)
-            {
-                return NotFound();
-            }
-
-            return effects;
-        }
-
-        [HttpGet("GetPositiveEffects")]
-        [ActionName("GetPositiveEffects")]
-        public async Task<ActionResult<IEnumerable<EffectsVue>>> GetPositiveEffects()
-        {
-            return await _context.Effects
-                .Where(a => a.IsPositive)
-                .Select(a => new EffectsVue {
-                    Id = a.Id,
-                    Name = a.Name
-                })
-                .ToListAsync();
-        }
-
-        [HttpGet("GetNegativeEffects")]
-        [ActionName("GetNegativeEffects")]
-        public async Task<ActionResult<IEnumerable<EffectsVue>>> GetNegativeEffects()
-        {
-            return await _context.Effects
-                .Where(a => a.IsNegative)
-                .Select(a => new EffectsVue{
-                    Id = a.Id,
-                    Name = a.Name
-                })
-                .ToListAsync();
-        }
-
-        // PUT: api/Effects/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutEffects(int id, Effects effects)
-        {
-            if (id != effects.Id)
+            if (effect is null)
             {
                 return BadRequest();
             }
 
-            _context.Entry(effects).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!EffectsExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
+            return effect;
         }
 
-        // POST: api/Effects
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<Effects>> PostEffects(Effects effects)
+        [HttpGet("GetPositiveEffects")]
+        [ActionName("GetPositiveEffects")]
+        public async Task<IEnumerable<EffectDto>> GetPositiveEffects()
         {
-            _context.Effects.Add(effects);
-            await _context.SaveChangesAsync();
+            return await _effectQuerry.GetPositiveEffects();
+        }
 
-            return CreatedAtAction("GetEffects", new { id = effects.Id }, effects);
+        [HttpGet("GetNegativeEffects")]
+        [ActionName("GetNegativeEffects")]
+        public async Task<IEnumerable<EffectDto>> GetNegativeEffects()
+        {
+            return await _effectQuerry.GetNegativeEffects();
+        }
+
+        [HttpPost(nameof(AddEffect))]
+        public async Task AddEffect([FromQuery] EffectDto effectDto)
+        {
+            await _effectCommand.AddEffect(effectDto);
+        }
+
+        // PUT: api/Effects/5
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPut("UpdateEffect")]
+        public async Task UpdateEffect(EffectDto effectDto)
+        {
+            await _effectCommand.PutEffect(effectDto);
         }
 
         // DELETE: api/Effects/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteEffects(int id)
+        [HttpDelete("DeleteEffect")]
+        public async Task DeleteEffect(int id)
         {
-            var effects = await _context.Effects.FindAsync(id);
-            if (effects == null)
-            {
-                return NotFound();
-            }
-
-            _context.Effects.Remove(effects);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
+            await _effectCommand.DeleteEffect(id);
         }
 
-        private bool EffectsExists(int id)
+        [HttpGet(nameof(GenerateEffects))]
+        public async Task<IEnumerable<EffectDto>> GenerateEffects()
         {
-            return _context.Effects.Any(e => e.Id == id);
+            return await _effectGenerator.GenerateEffects();
         }
     }
 }

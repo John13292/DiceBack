@@ -1,6 +1,6 @@
-﻿namespace DiceBack
+﻿namespace DiceBack.Entities
 {
-    public class Images
+    public class Image
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
