@@ -1,88 +1,85 @@
 ﻿#nullable disable
-using Microsoft.AspNetCore.Mvc;
-using DiceBack.Contracts.Models;
-using DiceBack.Application.Effects.Querry;
 using DiceBack.Application.Effects.Command;
-using DiceBack.Application.Effects.Querry.EffectGenerator;
+using DiceBack.Application.Effects.Query;
+using DiceBack.Application.Effects.Query.EffectGenerator;
+using DiceBack.Contracts.Models;
+using Microsoft.AspNetCore.Mvc;
 
-namespace DiceBack.Controllers
+namespace DiceBack.Api.Controllers;
+
+[Route("api/[controller]")]
+[ApiController]
+public class EffectsController : ControllerBase
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class EffectsController : ControllerBase
+    private readonly IEffectQuery _effectQuery;
+    private readonly IEffectCommand _effectCommand;
+    private readonly IEffectGenerator _effectGenerator;
+
+    public EffectsController(IEffectQuery effectQuery, IEffectCommand effectCommand, IEffectGenerator effectGenerator)
     {
-        private readonly IEffectQuerry _effectQuerry;
-        private readonly IEffectCommand _effectCommand;
-        private readonly IEffectGenerator _effectGenerator;
+        _effectQuery = effectQuery;
+        _effectCommand = effectCommand;
+        _effectGenerator = effectGenerator;
+    }
 
-        public EffectsController(IEffectQuerry effectQuerry, IEffectCommand effectCommand, IEffectGenerator effectGenerator)
-        {
-            _effectQuerry = effectQuerry;
-            _effectCommand = effectCommand;
-            _effectGenerator = effectGenerator;
-        }
+    // GET: api/Effects
+    [HttpGet(nameof(GetEffects))]
+    public async Task<IEnumerable<EffectDto>> GetEffects()
+    {
+        return await _effectQuery.GetEffects();
+    }
 
-        // GET: api/Effects
-        [HttpGet("GetEffects")]
-        public async Task<IEnumerable<EffectDto>> GetEffects()
-        {
-            return await _effectQuerry.GetEffects();
-        }
-
-        // GET: api/Effects/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<EffectDto>> GetEffects(int id)
-        {
+    // GET: api/Effects/5
+    [HttpGet("{id}")]
+    public async Task<ActionResult<EffectDto>> GetEffects(int id)
+    {
             
-            var effect = await _effectQuerry.GetEffectById(id);
+        var effect = await _effectQuery.GetEffectById(id);
 
-            if (effect is null)
-            {
-                return BadRequest();
-            }
-
-            return effect;
-        }
-
-        [HttpGet("GetPositiveEffects")]
-        [ActionName("GetPositiveEffects")]
-        public async Task<IEnumerable<EffectDto>> GetPositiveEffects()
+        if (effect is null)
         {
-            return await _effectQuerry.GetPositiveEffects();
+            return BadRequest();
         }
 
-        [HttpGet("GetNegativeEffects")]
-        [ActionName("GetNegativeEffects")]
-        public async Task<IEnumerable<EffectDto>> GetNegativeEffects()
-        {
-            return await _effectQuerry.GetNegativeEffects();
-        }
+        return effect;
+    }
 
-        [HttpPost(nameof(AddEffect))]
-        public async Task AddEffect([FromQuery] EffectDto effectDto)
-        {
-            await _effectCommand.AddEffect(effectDto);
-        }
+    [HttpGet(nameof(GetPositiveEffects))]
+    public async Task<IEnumerable<EffectDto>> GetPositiveEffects()
+    {
+        return await _effectQuery.GetPositiveEffects();
+    }
 
-        // PUT: api/Effects/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("UpdateEffect")]
-        public async Task UpdateEffect(EffectDto effectDto)
-        {
-            await _effectCommand.PutEffect(effectDto);
-        }
+    [HttpGet(nameof(GetNegativeEffects))]
+    public async Task<IEnumerable<EffectDto>> GetNegativeEffects()
+    {
+        return await _effectQuery.GetNegativeEffects();
+    }
 
-        // DELETE: api/Effects/5
-        [HttpDelete("DeleteEffect")]
-        public async Task DeleteEffect(int id)
-        {
-            await _effectCommand.DeleteEffect(id);
-        }
+    [HttpPost(nameof(AddEffect))]
+    public async Task AddEffect([FromQuery] EffectDto effectDto)
+    {
+        await _effectCommand.AddEffect(effectDto);
+    }
 
-        [HttpGet(nameof(GenerateEffects))]
-        public async Task<IEnumerable<EffectDto>> GenerateEffects()
-        {
-            return await _effectGenerator.GenerateEffects();
-        }
+    // PUT: api/Effects/5
+    // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+    [HttpPut(nameof(UpdateEffect))]
+    public async Task UpdateEffect(EffectDto effectDto)
+    {
+        await _effectCommand.PutEffect(effectDto);
+    }
+
+    // DELETE: api/Effects/5
+    [HttpDelete(nameof(DeleteEffect))]
+    public async Task DeleteEffect(int id)
+    {
+        await _effectCommand.DeleteEffect(id);
+    }
+
+    [HttpGet(nameof(GenerateEffects))]
+    public async Task<IEnumerable<EffectDto>> GenerateEffects()
+    {
+        return await _effectGenerator.GenerateEffects();
     }
 }

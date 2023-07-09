@@ -2,13 +2,12 @@
 using DiceBack.Contracts.Models;
 using DiceBack.Entities;
 
-namespace DiceBack.Application.Mapping
+namespace DiceBack.Application.Mapping;
+
+public class EffectDtoMappingEffect : Profile
 {
-    public class EffectDtoMappingEffect : Profile
+    public EffectDtoMappingEffect()
     {
-        public EffectDtoMappingEffect()
-        {
-            CreateMap<EffectDto, Effect>().ReverseMap();
-        }
+        CreateMap<EffectDto, Effect>().ReverseMap();
     }
 }

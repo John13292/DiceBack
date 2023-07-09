@@ -1,8 +1,8 @@
 ﻿using DiceBack.Contracts.Models;
 
-namespace DiceBack.Application.Effects.Querry;
+namespace DiceBack.Application.Effects.Query;
 
-public interface IEffectQuerry
+public interface IEffectQuery
 {
     public Task<EffectDto> GetEffectById(int id);
     public Task<IEnumerable<EffectDto>> GetEffects();
